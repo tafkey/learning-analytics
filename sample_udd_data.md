@@ -55,7 +55,7 @@ http://uojapi2.analytics.alpha.jisc.ac.uk:1341/studentcoursemembership
 
 http://uojapi2.analytics.alpha.jisc.ac.uk:1341/studentonassessmentinstance
 
-http://uojapi2.analytics.alpha.jisc.ac.uk:1341/studentmodulenstance
+http://uojapi2.analytics.alpha.jisc.ac.uk:1341/studentmoduleinstance
 
 http://uojapi2.analytics.alpha.jisc.ac.uk:1341/studentcourseinstance
 
