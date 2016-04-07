@@ -69,7 +69,7 @@ http://uojapi2.analytics.alpha.jisc.ac.uk:1341/modulevlemap
 
 ### How to use the APIs
 
-The APIs use a simple syntax: ?<ATTRIBUTE>=<VALUE>
+The APIs use a simple syntax: ?ATTRIBUTE=VALUE
 
 eg: http://uojapi2.analytics.alpha.jisc.ac.uk:1341/student?STUDENT_ID=10000000  will return STUDENT 100000
 
