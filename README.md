@@ -1,9 +1,10 @@
 # Jisc's Learning Analytics Platform.
-This repo provides technical documentation for Jisc's Learning Analytics Platform.  This information is aimed at developers who which to build applications on the framework.
+This repo provides technical documentation for Jisc's Learning Analytics Platform.  This information is aimed at developers and researchers who wish to build applications on the framework.
 
 ## Useful resources
 
 * [Overview of the framework](overview.md)
+* [Sample student dataset in Universal Data Definition (UDD) format](sample_udd_data.md)
 
 ## Related repos
 
