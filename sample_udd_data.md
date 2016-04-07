@@ -75,5 +75,7 @@ eg: http://uojapi2.analytics.alpha.jisc.ac.uk:1341/student?STUDENT_ID=10000000  
 
 http://uojapi2.analytics.alpha.jisc.ac.uk:1341/student  will return all students.
 
+Querys can also use % as a wild card:
 
+eg: http://uojapi2.analytics.alpha.jisc.ac.uk:1341/student?STUDENT_ID=1% will return all Group 2 students (as they start with a 1)
 
