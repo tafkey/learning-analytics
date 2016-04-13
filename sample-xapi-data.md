@@ -59,6 +59,4 @@ The data matches the sample student data.
       }
    }
 },
-
-
-``` JSON
+```
