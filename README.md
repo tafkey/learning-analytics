@@ -5,6 +5,7 @@ This repo provides technical documentation for Jisc's Learning Analytics Platfor
 
 * [Overview of the framework](overview.md)
 * [Sample student dataset in Universal Data Definition (UDD) format](sample_udd_data.md)
+* [Sample xAPI data in Jisc VLE Recipies v0.1 format](sample_xapi_data.md)
 * [Sample xAPI queries (Aggregation)](xapi-aggregation.md)
 
 ## Related Documentation repos
