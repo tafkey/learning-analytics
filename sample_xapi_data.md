@@ -8,7 +8,7 @@ The file is split into files of around 100k records to make opening in text brow
 
 The data matches the sample student data.
 
-[Download xAPI data Set](xapi-test-set.zip)
+[Download xAPI data Set](xapi-test-set-v2.zip)
 
 ##Sample row
 ``` JSON
@@ -53,8 +53,10 @@ The data matches the sample student data.
          "description":{  
             "en":"<p>More detail</p>"
          },
-         "http://xapi.jisc.ac.uk/extensions/applicationType":{  
-            "type":"http://xapi.jisc.ac.uk/define/vle"
+         "extensions":{
+            "http://xapi.jisc.ac.uk/extensions/applicationType":{  
+               "type":"http://xapi.jisc.ac.uk/define/vle"
+            }
          }
       }
    }
