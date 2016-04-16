@@ -10,7 +10,7 @@ http://jisc.learninglocker.net/api/v1/statements/aggregate?pipeline=[]
 
 and then pipelines can be added as JSON array elements between the square brackets.
 
-Each pipeline takes the form { "$<pipeline_keyword>": {<pipeline statements>} }
+Each pipeline takes the form { "$\<pipeline_keyword\>": {\<pipeline statements\>} }
 
 Pipelines are processed in order, and the result set from each pipeline is passed to the next one. For this reason, usually the first pipeline is a $match pipeline to filter a smaller result set, and then aggregations like $group can be used in subsequent stages.
 
