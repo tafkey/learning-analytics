@@ -122,7 +122,32 @@ You'll see that the record comes back as JSON, with an array 'result' and some s
 
 You can match and aggregate any of the fields you see in the JSON response. Again, though, for the sake of performance, as well as being nice to the server and your fellow participants, you should probably get into the mindset of aggregating responses where possible unless you know you require full records, and you know your query won't pull large numbers of records.
 
-With that in mind, here's a simple aggregation query returning the names of all the actors in the data, along with counts of their statements. For this query, we don't want to filter the data at all, so the match is empty. 
+With that in mind, here's an aggregation query to find out how many distinct actors there are in the data using two group pipelines -- the first to isolate the distinct actor names, and the second to count them:
+
+{"$match": {}}, {"$group": {"_id": "$statement.actor.name"} }, {"$group": {"_id": "actors", "count": {"$sum": 1}} }
+
+with sample result:
+
+{
+  "result": [
+    {
+      "_id": "actors",
+      "count": 357
+    }
+  ],
+  "ok": 1,
+  "$gleStats": {
+    "lastOpTime": {
+      "sec": 1461249803,
+      "inc": 7
+    },
+    "electionId": {
+      "$id": "56e251b9437d1a2ccfac1b59"
+    }
+  }
+}
+
+357 doesn't seem like *too* many, so let's go ahead and run a simpler aggregation query just returning the names of all the actors in the data, along with counts of their statements. For this query, we don't want to filter the data at all, so the match is empty. 
 
 {"$match": {}}, {"$group": {"_id": "$statement.actor.name", "count": {"$sum":1} } }
 
@@ -139,7 +164,7 @@ with sample result:
       "count": 847
     },
     
-    ... (
+    ... (357 records total)
   
   ]
 }
@@ -185,11 +210,11 @@ with sample result:
 
 ## Sample Queries
 
-From this point forward, a lot of the examples are real examples used in the Jisc student app. 
+From this point forward, the examples are real examples used in the Jisc student app!
 
 ### Activity by actor
 
-If you were only interested in the 'activity' (verb URIs and counts) for a particular actor, then the filter would come in:        (internal Jisc note: from STUAPP 5)
+If you were only interested in the 'activity' (verb URIs and counts) for a particular actor, then the match filter would come in:        (internal Jisc note: from STUAPP 5)
 
 {"$match": {"statement.actor.name":"92330254"} }, 
 {"$group": {"_id": "$statement.verb.id", "count": {"$sum":1} } }
@@ -677,7 +702,7 @@ with sample result:
       ]
     },
     
-    ...
+    ... (125 blocks in total)
     
   ]
 }  
