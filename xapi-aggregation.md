@@ -734,3 +734,13 @@ with sample result:
 ### To infinity, and beyond
 
 Following the idea here, you might want to satisfy yourself as an exercise that you could go one step further and group up by module, actor and day -- if you can achieve that, then you've truly mastered my little tutorial. Happy aggregating!
+
+## Useful Query Stubs for Hackathon participants
+
+As we add multiple data sets to the lockers, you may find it useful to be able to differentiate between them. With some thought as to which fields are unique to the various data sets, it should be possible to build queries which filter them down to the one of interest.
+
+### Filtering for datasets uploaded by a specific user:
+
+The user uploading the stetements is captured in statement.authority.name, e.g. the following query will return the set of enhanced statements uploaded by Alan in the read-only data set. Note that this is just a suggestion for the filtering term, add your own aggregate query in place of $limit: 1! 
+
+{"$match": {"statement.authority.name": "Alan Berg Write"}}, {"$limit": 1}
