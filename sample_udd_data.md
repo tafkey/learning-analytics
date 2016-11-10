@@ -1,7 +1,7 @@
 
 ### This set has now been retired
 
-See [https://github.com/jiscdev/uoj](https://github.com/jiscdev/uoj} for the latest version
+See [https://github.com/jiscdev/uoj](https://github.com/jiscdev/uoj) for the latest version
 
 ### This is for legacy reference only
 
