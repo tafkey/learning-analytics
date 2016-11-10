@@ -1,3 +1,10 @@
+
+### This set has now been retired
+
+See [https://github.com/jiscdev/uoj](https://github.com/jiscdev/uoj} for the latest version
+
+### This is for legacy reference only
+
 #'University of Jisc' Sample Data Set
 
 This is a dataset for testing and experimenting with the Jisc Learning Analytics infrastrcture.  It consists of a number of students enrolled
