@@ -1,11 +1,7 @@
 # Jisc's Learning Analytics Architecture.
 This repository provides technical documentation for Jisc's Learning Analytics Platform.  This information is aimed at developers and researchers who wish to build applications on the framework, as well as sites that wish to implement services.
 
-## Overview of the Architecture
-
-* [General Overview](genoverview.md)
-
-
+[Core Documenation] (https://github.com/jiscdev/learning-analytics/wiki) is held in the wiki
 ## Useful resources
 
 * [Technical Overview of the framework](techoverview.md)
