@@ -3,9 +3,13 @@ This repository provides technical documentation for Jisc's Learning Analytics P
 
 [Core Documenation] (https://github.com/jiscdev/learning-analytics/wiki) is held in the wiki
 
+The core documentation is also available in a more user friendly format:
+
+[Core Documenation: User Version](https://docs.analytics.alpha.jisc.ac.uk/docs)
+
 ## Useful resources
 
-* [Core Documenation] (https://github.com/jiscdev/learning-analytics/wiki)
+* [Core Documenation] (https://docs.analytics.alpha.jisc.ac.uk/docs)
 * [Technical Overview of the framework](techoverview.md)
 * [Sample student dataset format](https://github.com/jiscdev/uoj)
 * [Sample xAPI queries (Aggregation)](xapi-aggregation.md)
