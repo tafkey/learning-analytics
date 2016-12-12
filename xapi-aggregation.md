@@ -125,7 +125,7 @@ You can match and aggregate any of the fields you see in the JSON response. Agai
 
 With that in mind, here's an aggregation query to find out how many distinct actors there are in the data using two group pipelines -- the first to isolate the distinct actor names, and the second to count them:
 
-```{"$match": {}}, {"$group": {"_id": "$statement.actor.name"} }, {"$group": {"_id": "actors", "count": {"$sum": 1}} }```
+```{"$match": {}}, {"$group": {"_id": "$statement.actor.account.name"} }, {"$group": {"_id": "actors", "count": {"$sum": 1}} }```
 
 with sample result:
 ```
@@ -151,7 +151,7 @@ with sample result:
 
 357 doesn't seem like *too* many, so let's go ahead and run a simpler aggregation query just returning the names of all the actors in the data, along with counts of their statements. For this query, we don't want to filter the data at all, so the match is empty. 
 
-```{"$match": {}}, {"$group": {"_id": "$statement.actor.name", "count": {"$sum":1} } }```
+```{"$match": {}}, {"$group": {"_id": "$statement.actor.account.name", "count": {"$sum":1} } }```
 
 with sample result:
 
@@ -216,13 +216,13 @@ with sample result:
 
 ## Sample Queries
 
-From this point forward, the examples are real examples used in the Jisc student app!
+From this point forward, the examples are real examples used in developing the Jisc student app!
 
 ### Activity by actor
 
 If you were only interested in the 'activity' (verb URIs and counts) for a particular actor, then the match filter would come in:        (internal Jisc note: from STUAPP 5)
 
-```{"$match": {"statement.actor.name":"92330254"} }, 
+```{"$match": {"statement.actor.account.name":"92330254"} }, 
 {"$group": {"_id": "$statement.verb.id", "count": {"$sum":1} } }```
 
 with sample result:
@@ -254,9 +254,9 @@ with sample result:
 
 ### Activity by actor within time period
 
-Maybe you just want to see if that actor did anything in January, so you would bring in the concept of AND by using multiple filter terms and bringing in date filtering:        (internal Jisc note: from STUAPP 3)
+Maybe you just want to see if that actor did anything in January, so you would bring in the concept of AND by using multiple filter terms and bringing in date filtering. Note that we have two fields in the data containing dates -- timestamp, which is indexed for optimal searching, and statement.timestamp, which is a simple string field and can be used for matching:        (internal Jisc note: from STUAPP 3)
 
-```{ "$match":{ "statement.actor.name":"92330254", "statement.timestamp": { "$gt":"2016-01-01T00:00:00-00:00", "$lt":"2016-02-01T00:00:00-00:00" } } }, { "$group":{ "_id":"$statement.verb.id", "count": { "$sum":1 } } }```
+```{ "$match":{ "statement.actor.account.name":"92330254", "timestamp": { "$gt":{"$dte":"2016-01-01T00:00:00-00:00"}, "$lt":{"$dte":"2016-02-01T00:00:00-00:00"} } } }, { "$group":{ "_id":"$statement.verb.id", "count": { "$sum":1 } } }```
 
 with sample result:
 
@@ -289,7 +289,7 @@ with sample result:
 
 One particular filter of interest might be to only return activity on a certain module:        (internal Jisc note: from STUAPP 11)
 
-```{"$match":{ "statement.actor.name":"92330254", "statement.object.definition.name.en":"MODS101" }},
+```{"$match":{ "statement.actor.account.name":"92330254", "statement.object.definition.name.en":"MODS101" }},
 {"$group":{"_id":"$statement.verb.id","count":{ "$sum":1 }}}```
 
 with sample result:
@@ -319,7 +319,7 @@ with sample result:
 
 You might want to filter out everything except VLE generated data -- here we introduce the concept of OR by using an array of filter terms:        (internal Jisc note: from STUAPP 19)
 
-```{"$match":{"statement.actor.name":"92330254","statement.context.platform":{ "$in":[ "Blackboard", "Moodle" ] }}},
+```{"$match":{"statement.actor.account.name":"92330254","statement.context.platform":{ "$in":[ "Blackboard", "Moodle" ] }}},
 {"$group":{"_id":"vle","count":{ "$sum":1 }}}```
 
 with sample result:
@@ -351,7 +351,7 @@ Maybe you want to break down the aggregate, so that instead of using the above q
 The first group makes use of an id object to perform a more complicated 'GROUP BY' step -- grouping and counting statements where both the month (obtained from the first 7 characters of the timestamp string) and the verb are the same.
 We then pass that data to a pipeline which makes use of the 'push' keyword to build a data structure on the fly, taking all verb/month pairs with the same value of month and bundling them up together:        (internal Jisc note: from STUAPP 7)
 
-```{"$match":{ "statement.actor.name":"92330254" }},
+```{"$match":{ "statement.actor.account.name":"92330254" }},
 {"$group":{"_id":{"month":{ "$substr":[ "$statement.timestamp", 0, 7 ] },"verb":"$statement.verb.id"},"count":{ "$sum":1 }}},
 {"$group":{"_id":"$_id.month","counts":{"$push":{ "verb":"$_id.verb", "count":"$count" }}}}```
 
@@ -443,7 +443,7 @@ with sample result:
 
 You can restrict the above query to a time period of interest:        (internal Jisc note: from STUAPP 8)
 
-```{"$match":{"statement.actor.name":"92330254" ,"statement.timestamp":{ "$gt":"2016-02-03T00:00:00-00:00"}}},
+```{"$match":{"statement.actor.account.name":"92330254" ,"timestamp":{ "$gt":{"$dte": "2016-02-03T00:00:00-00:00"}}}},
 {"$group":{"_id":{"month":{ "$substr":[ "$statement.timestamp", 0, 7 ] },"verb":"$statement.verb.id"},"count":{ "$sum":1 }}},
 {"$group":{"_id":"$_id.month","counts":{"$push":{ "verb":"$_id.verb", "count":"$count" }}}}```
 
@@ -509,8 +509,8 @@ with sample result:
 
 If you're interested in comparing actors instead of months, you can return verbs for more than one using the array OR filtering:        (internal Jisc note: from STUAPP 2)
 
-```{"$match":{"statement.actor.name":{ "$in":[ "92330254", "92244332", "91576513", " 90998493", "90293824" ] }}},
-{"$group":{"_id":{ "user":"$statement.actor.name", "verb":"$statement.verb.id" },"count":{ "$sum":1 }}},
+```{"$match":{"statement.actor.account.name":{ "$in":[ "92330254", "92244332", "91576513", " 90998493", "90293824" ] }}},
+{"$group":{"_id":{ "user":"$statement.actor.account.name", "verb":"$statement.verb.id" },"count":{ "$sum":1 }}},
 {"$group":{"_id":"$_id.user","counts":{"$push":{ "verb":"$_id.verb", "count":"$count" }}}}```
 
 with sample result:
@@ -588,8 +588,8 @@ with sample result:
 
 Again, you can develop the above query by restricting it to a time period of interest:        (internal Jisc note: from STUAPP 1)
 
-```{ "$match":{"statement.actor.name":{ "$in":[ "92330254", "92244332", "91576513", " 90998493", "90293824" ] }, "statement.timestamp": { "$gt":"2014-01-01T00:00:00-00:00" }} },
-{"$group":{"_id":{ "user":"$statement.actor.name", "verb":"$statement.verb.id" },"count":{ "$sum":1 }}},
+```{ "$match":{"statement.actor.account.name":{ "$in":[ "92330254", "92244332", "91576513", " 90998493", "90293824" ] }, "timestamp": { "$gt":{"$dte": "2014-01-01T00:00:00-00:00"} }} },
+{"$group":{"_id":{ "user":"$statement.actor.account.name", "verb":"$statement.verb.id" },"count":{ "$sum":1 }}},
 {"$group":{"_id":"$_id.user","counts":{"$push":{ "verb":"$_id.verb", "count":"$count" }}}}```
 
 with sample result:
@@ -667,8 +667,8 @@ with sample result:
 
 Finally, if you are feeling particularly perverse, you might want to build in more levels of hierarchy to your result set. Each layer you want to add will require an extra group pipeline. For example, this lollapalooza of all queries which groups up activity on a module by both actor and day!        (internal Jisc note: from STUAPP 12)
 
-```{"$match":{"statement.actor.name":{ "$in":[ "92330254", "92244332" ] },"statement.object.definition.name.en":"MODS101", "statement.timestamp":{ "$gt":"2014-10-01T00:00:00" }}},
-{"$group":{"_id":{"student":"$statement.actor.name","day":{ "$substr":[ "$statement.timestamp", 0, 10 ] },"verb":"$statement.verb.id"},
+```{"$match":{"statement.actor.account.name":{ "$in":[ "92330254", "92244332" ] },"statement.object.definition.name.en":"MODS101", "timestamp":{ "$gt":{"$dte":"2014-10-01T00:00:00" }}}},
+{"$group":{"_id":{"student":"$statement.actor.account.name","day":{ "$substr":[ "$statement.timestamp", 0, 10 ] },"verb":"$statement.verb.id"},
 "count":{ "$sum":1 }}},
 {"$group":{"_id":{ "day":"$_id.day", "student":"$_id.student" },"counts":{"$push":{ "verb":"$_id.verb", "count":"$count" }}}},
 {"$group":{"_id":"$_id.day","students":{"$push":{ "student":"$_id.student", "counts":"$counts" }}}}```
@@ -735,11 +735,44 @@ with sample result:
 
 Following the idea here, you might want to satisfy yourself as an exercise that you could go one step further and group up by module, actor and day -- if you can achieve that, then you've truly mastered my little tutorial. Happy aggregating!
 
-## Useful Query Stubs for Hackathon participants
 
-As we add multiple data sets to the lockers, you may find it useful to be able to differentiate between them. With some thought as to which fields are unique to the various data sets, it should be possible to build queries which filter them down to the one of interest.
+## Joining data from the UDD tables
 
-### Filtering for datasets uploaded by a specific user:
+Newer versions of the Jisc LRS offer the feature to query xAPI data, and then perform inner joins with the UDD data which is held in the same warehouse. Joins like these are simply an extra pipeline step of the following form:
+```
+    {"$lookup": {"from": <udd_table>,
+                 "localField": <field name in current pipeline>,
+                 "foreignField": <name of field containing this data in udd>,
+                 "as": <arbitrary field name for the joined data structure to add to your existing data>
+                }
+    }
+```
+
+The available UDD table names for the Jisc warehouse are as follows:
+
+jiscAssessmentInstances
+jiscCourses
+jiscCourseInstances
+jiscInstitutions
+jiscModules
+jiscModuleInstances
+jiscModuleVleMaps
+jiscStaff
+jiscStaffCourseInstances
+jiscStaffModuleInstances
+jiscStudents
+jiscStudentAssessmentInstances
+jiscStudentCourseInstances
+jiscStudentCourseMemberships
+jiscStudentModuleInstances
+
+each of these corresponds to an [Analytics UDD](https://github.com/jiscdev/analytics-udd/) table. 
+
+# Useful Extra Query Stubs for shared lockers, e.g. Hackathon participants
+
+In general, each institution will have it's own partition in the warehouse. However, for some applications, there may be a single locker populated by many users and containing data from multiple recipies and datasets. In cases like these, you may find it useful to be able to differentiate between datasets.. With some thought as to which fields are unique to the various data sets, it should be possible to build queries which filter them down to the one of interest.
+
+## Filtering for datasets uploaded by a specific user:
 
 The user uploading the stetements is captured in statement.authority.name, e.g. the following query will return the set of enhanced statements uploaded by Alan in the read-only data set. Note that this is just a suggestion for the filtering term, add your own aggregate query in place of $limit: 1! 
 
