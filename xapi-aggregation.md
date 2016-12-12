@@ -749,7 +749,7 @@ Newer versions of the Jisc LRS offer the feature to query xAPI data, and then pe
 ```
 
 The available UDD table names for the Jisc warehouse are as follows:
-
+```
 jiscAssessmentInstances
 jiscCourses
 jiscCourseInstances
@@ -765,7 +765,7 @@ jiscStudentAssessmentInstances
 jiscStudentCourseInstances
 jiscStudentCourseMemberships
 jiscStudentModuleInstances
-
+```
 each of these corresponds to an [Analytics UDD](https://github.com/jiscdev/analytics-udd/) table. 
 
 # Useful Extra Query Stubs for shared lockers, e.g. Hackathon participants
