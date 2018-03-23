@@ -1,7 +1,7 @@
 # Jisc's Learning Analytics Architecture.
 This repository provides technical documentation for Jisc's Learning Analytics Platform.  This information is aimed at developers and researchers who wish to build applications on the framework, as well as sites that wish to implement services.
 
-[Core Documenation] (https://github.com/jiscdev/learning-analytics/wiki) is held in the wiki
+[Core Documenation](https://github.com/jiscdev/learning-analytics/wiki) is held in the wiki
 
 The core documentation is also available in a more user friendly format:
 
@@ -17,7 +17,7 @@ The core documentation is also available in a more user friendly format:
 
 ## Related Documentation repos
 
-* [xAPI Recipes] (https://github.com/jiscdev/xapi) 
-* [Universal Data Definitions] (https://github.com/jiscdev/analytics-udd) 
+* [xAPI Recipes](https://github.com/jiscdev/xapi) 
+* [Universal Data Definitions](https://github.com/jiscdev/analytics-udd) 
 
 
